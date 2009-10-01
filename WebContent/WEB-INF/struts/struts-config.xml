@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE struts-config PUBLIC
+  "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+  "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+
+<struts-config>
+
+  <form-beans>
+
+    <form-bean name="rangeForm" type="org.apache.struts.action.DynaActionForm">
+      <form-property type="java.lang.Integer" name="min" initial="1"/>
+      <form-property type="java.lang.Integer" name="max" initial="100"/>
+    </form-bean>
+
+    <form-bean name="guessForm" type="org.apache.struts.validator.DynaValidatorForm">
+      <form-property type="java.lang.Integer" name="guess" initial="0"/>
+      <form-property type="java.lang.Integer" name="comparison" initial="0"/>
+      <form-property type="java.lang.Integer" name="numGuesses" initial="0"/>
+      <form-property type="java.lang.Integer" name="bestScore" initial="0"/>
+      <form-property type="java.lang.Boolean" name="newBestScore" initial="false"/>
+    </form-bean>
+
+  </form-beans>
+
+  <action-mappings>
+
+    <action   path="/guess"
+       type="numguess.GuessAction"
+       name="guessForm"
+       validate="true"
+       scope="request"
+       input="/WEB-INF/jsp/invalid.jspx">
+      <forward name="right" path="/WEB-INF/jsp/right.jspx"/>
+      <forward name="wrong" path="/WEB-INF/jsp/wrong.jspx"/>
+    </action>
+
+    <action   path="/restart"
+       type="numguess.RestartAction"
+       name="rangeForm"
+       scope="request">
+      <forward name="restart" path="/WEB-INF/jsp/start.jspx"/>
+    </action>
+  </action-mappings>
+
+  <message-resources parameter="numguess.ApplicationResources" null="false">
+   <set-property key="mode" value="JSTL"/>
+  </message-resources>
+
+  <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+    <set-property 
+      property="pathnames" 
+      value="/WEB-INF/struts/validator-rules.xml, /WEB-INF/struts/validation.xml"/>
+  </plug-in>
+  
+</struts-config>
